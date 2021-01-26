@@ -1,4 +1,4 @@
-module github.com/go-vgo/robotgo
+module github.com/0Delta/robotgo
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
