@@ -969,6 +969,7 @@ func FindBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 		sbit = args[0].(C.MMBitmapRef)
 	} else {
 		sbit = CaptureScreen()
+		defer FreeBitmap(sbit)
 	}
 
 	if len(args) > 1 {
@@ -977,9 +978,9 @@ func FindBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 
 	fx, fy := internalFindBitmap(bit, sbit, tolerance)
 	// FreeBitmap(bit)
-	if len(args) <= 0 {
-		FreeBitmap(sbit)
-	}
+	// if len(args) <= 0 {
+	// 	FreeBitmap(sbit)
+	// }
 
 	return fx, fy
 }
@@ -1002,6 +1003,7 @@ func FindPic(path string, args ...interface{}) (int, int) {
 		sbit = args[0].(C.MMBitmapRef)
 	} else {
 		sbit = CaptureScreen()
+		defer FreeBitmap(sbit)
 	}
 
 	if len(args) > 1 {
@@ -1010,9 +1012,9 @@ func FindPic(path string, args ...interface{}) (int, int) {
 
 	fx, fy := internalFindBitmap(openbit, sbit, tolerance)
 	FreeBitmap(openbit)
-	if len(args) <= 0 {
-		FreeBitmap(sbit)
-	}
+	// if len(args) <= 0 {
+	// 	FreeBitmap(sbit)
+	// }
 
 	return fx, fy
 }
