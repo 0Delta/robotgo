@@ -969,6 +969,7 @@ func FindBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 		sbit = args[0].(C.MMBitmapRef)
 	} else {
 		sbit = CaptureScreen()
+		defer FreeBitmap(sbit)
 	}
 
 	if len(args) > 1 {
@@ -977,9 +978,9 @@ func FindBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 
 	fx, fy := internalFindBitmap(bit, sbit, tolerance)
 	// FreeBitmap(bit)
-	if len(args) <= 0 {
-		FreeBitmap(sbit)
-	}
+	// if len(args) <= 0 {
+	// 	FreeBitmap(sbit)
+	// }
 
 	return fx, fy
 }
@@ -1002,6 +1003,7 @@ func FindPic(path string, args ...interface{}) (int, int) {
 		sbit = args[0].(C.MMBitmapRef)
 	} else {
 		sbit = CaptureScreen()
+		defer FreeBitmap(sbit)
 	}
 
 	if len(args) > 1 {
@@ -1010,9 +1012,9 @@ func FindPic(path string, args ...interface{}) (int, int) {
 
 	fx, fy := internalFindBitmap(openbit, sbit, tolerance)
 	FreeBitmap(openbit)
-	if len(args) <= 0 {
-		FreeBitmap(sbit)
-	}
+	// if len(args) <= 0 {
+	// 	FreeBitmap(sbit)
+	// }
 
 	return fx, fy
 }
@@ -1029,6 +1031,7 @@ func FindEveryBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 		sbit = args[0].(C.MMBitmapRef)
 	} else {
 		sbit = CaptureScreen()
+		defer FreeBitmap(sbit)
 	}
 
 	if len(args) > 1 {
@@ -1049,10 +1052,6 @@ func FindEveryBitmap(bit C.MMBitmapRef, args ...interface{}) (int, int) {
 	}
 
 	pos := C.find_every_bitmap(bit, sbit, tolerance, &lpos)
-	// FreeBitmap(bit)
-	if len(args) <= 0 {
-		FreeBitmap(sbit)
-	}
 
 	// fmt.Println("pos----", pos)
 	return int(pos.x), int(pos.y)
@@ -1266,6 +1265,7 @@ func FindColor(color CHex, args ...interface{}) (int, int) {
 		bitmap = args[0].(C.MMBitmapRef)
 	} else {
 		bitmap = CaptureScreen()
+		defer FreeBitmap(bitmap)
 	}
 
 	if len(args) > 1 {
@@ -1273,9 +1273,6 @@ func FindColor(color CHex, args ...interface{}) (int, int) {
 	}
 
 	pos := C.bitmap_find_color(bitmap, C.MMRGBHex(color), tolerance)
-	if len(args) <= 0 {
-		FreeBitmap(bitmap)
-	}
 
 	x := int(pos.x)
 	y := int(pos.y)
@@ -1309,6 +1306,7 @@ func CountColor(color CHex, args ...interface{}) int {
 		bitmap = args[0].(C.MMBitmapRef)
 	} else {
 		bitmap = CaptureScreen()
+		defer FreeBitmap(bitmap)
 	}
 
 	if len(args) > 1 {
@@ -1316,10 +1314,6 @@ func CountColor(color CHex, args ...interface{}) int {
 	}
 
 	count := C.bitmap_count_of_color(bitmap, C.MMRGBHex(color), tolerance)
-	if len(args) <= 0 {
-		FreeBitmap(bitmap)
-	}
-
 	return int(count)
 }
 
